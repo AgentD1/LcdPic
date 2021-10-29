@@ -1,40 +1,44 @@
-/* Microchip Technology Inc. and its subsidiaries.  You may use this software 
- * and any derivatives exclusively with Microchip products. 
- * 
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".  NO WARRANTIES, WHETHER 
- * EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
- * WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A 
- * PARTICULAR PURPOSE, OR ITS INTERACTION WITH MICROCHIP PRODUCTS, COMBINATION 
- * WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION. 
- *
- * IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
- * INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
- * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
- * BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE 
- * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS 
- * IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF 
- * ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *
- * MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE 
- * TERMS. 
- */
-
-/* 
- * File:   
- * Author: 
- * Comments:
- * Revision history: 
- */
-
-// This is a guard condition so that contents of this file are not included
-// more than once.  
 #ifndef LCD_H
 #define	LCD_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
+#include "UBMP4.h"
+#include "PIC16F1459config.h"
+#include "stdbool.h"
 
-void SetDisplay(char* topCharacters, char* bottomCharacters);
-void SetDisplay(char* topCharacters, char topLength, char* bottomCharacters, char bottomLength);
+#define LCD_RS    H5OUT
+#define LCD_RW    H6OUT
+#define LCD_E     H7OUT
+
+#define LCD_BUSY  H7IN
+#define LCD_BTRIS TRISCbits.TRISC6
+
+#define LCD_DB4   H1OUT
+#define LCD_DB5   H2OUT
+#define LCD_DB6   H3OUT
+#define LCD_DB7   H4OUT
+
+#define LCD_TRIS4 TRISCbits.TRISC0
+#define LCD_TRIS5 TRISCbits.TRISC1
+#define LCD_TRIS6 TRISCbits.TRISC2
+#define LCD_TRIS7 TRISCbits.TRISC3
+
+
+#define LCD_RW_WRITE 0
+#define LCD_RW_READ  1
+
+
+#define __lcd_delay() __delay_us(500)
+
+char ReadByte();
+
+void SendByte(char instruction);
+
+void AwaitUnbusy();
+
+
+//void SetDisplay(char* topCharacters, char* bottomCharacters);
+//void SetDisplay(char* topCharacters, char topLength, char* bottomCharacters, char bottomLength);
 
 
 
