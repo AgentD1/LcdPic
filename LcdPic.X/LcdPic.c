@@ -17,6 +17,10 @@
 
 #include    "UBMP4.h"           // Include UBMP4 constants and functions
 
+#include    "Lcd.h"
+
+void lcdInit(void);
+
 // TODO Set linker ROM ranges to 'default,-0-7FF' under "Memory model" pull-down.
 // TODO Set linker code offset to '800' under "Additional options" pull-down.
 
@@ -27,6 +31,10 @@ int main(void) {
     OSC_config();               // Configure internal oscillator for 48 MHz
     UBMP4_config();             // Configure on-board UBMP4 I/O devices
 	
+    
+    lcdInit();
+    
+    
     // Code in this while loop runs repeatedly.
     while(1) {
            
@@ -37,5 +45,13 @@ int main(void) {
     }
 }
 
-
-
+void lcdInit() {
+    AwaitUnbusy();
+    SendNybble(LCD_FUNCTION_SET | LCD_DL_4BIT);
+    AwaitUnbusy();
+    SendInstruction(LCD_FUNCTION_SET | LCD_DL_4BIT | LCD_N_2LINE | LCD_F_5x8);
+    AwaitUnbusy();
+    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_OFF);
+    AwaitUnbusy();
+    SendInstruction(LCD_ENTRY_MODE_SET | LCD_INCREMENT | LCD_EM_CURSOR_MOVE);
+}

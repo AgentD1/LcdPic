@@ -27,14 +27,62 @@
 #define LCD_RW_WRITE 0
 #define LCD_RW_READ  1
 
+#define LCD_RS_INSTRUCTION  0
+#define LCD_RS_DATA         1
+
+
+#define LCD_FUNCTION_SET        0b00100000
+#define LCD_DL_8BIT             0b00010000
+#define LCD_DL_4BIT             0b00000000
+#define LCD_N_2LINE             0b00001000
+#define LCD_N_1LINE             0b00000000
+#define LCD_F_5x10              0b00000100
+#define LCD_F_5x8               0b00000000
+
+#define LCD_DISPLAY_CONTROL     0b00001000
+#define LCD_DISPLAY_OFF         0b00000000
+#define LCD_DISPLAY_ON          0b00000100
+#define LCD_CURSOR_OFF          0b00000000
+#define LCD_CURSOR_ON           0b00000010
+#define LCD_BLINKING_OFF        0b00000000
+#define LCD_BLINKING_ON         0b00000001
+
+#define LCD_ENTRY_MODE_SET      0b00000100
+#define LCD_INCREMENT           0b00000010
+#define LCD_DECREMENT           0b00000000
+#define LCD_EM_DISPLAY_SHIFT    0b00000001
+#define LCD_EM_CURSOR_MOVE      0b00000000
+
+#define LCD_SHIFT               0b00010000
+#define LCD_S_DISPLAY_SHIFT     0b00001000
+#define LCD_S_CURSOR_MOVE       0b00000000
+#define LCD_SHIFT_RIGHT         0b00000100
+#define LCD_SHIFT_LEFT          0b00000000
+
+#define LCD_SET_CGRAM_ADDRESS   0b01000000
+
+#define LCD_SET_DDRAM_ADDRESS   0b10000000
+
 
 #define __lcd_delay() __delay_us(500)
 
-char ReadByte();
 
-void SendByte(char instruction);
 
-void AwaitUnbusy();
+void WriteCharacter(char character);
+void SendInstruction(char instruction);
+
+void AwaitUnbusy(void);
+
+// Advanced interface functionality
+
+char ReadByte(void);
+char ReadNybble(void);
+
+void SendNybble(char nybble);
+void SendByte(char nybble);
+
+void SetTris(bool enabled);
+
 
 
 //void SetDisplay(char* topCharacters, char* bottomCharacters);

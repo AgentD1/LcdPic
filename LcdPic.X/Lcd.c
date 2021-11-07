@@ -2,55 +2,37 @@
 
 #include "Lcd.h"
 
-
-void ClearDisplay() {
-    SendByte(0b00000001);
-}
-
-void ReturnHome() {
-    SendByte(0b00000010);
-}
-
-void EntryModeSet(bool increment, bool accompaniesDisplayShift) {
-    SendByte(0b00000101 | increment << 1 | accompaniesDisplayShift);
-}
-
-void DisplayOnToggle
-
-
 char ReadByte() {
-    LCD_RW = LCD_RW_WRITE;
+    SetTris(1);
+    LCD_RW = LCD_RW_READ;
     
-    char result = ReadNybble() << 4;
+    char result = (unsigned char)(ReadNybble() << 4);
     result |= ReadNybble();
     
     return result;
 }
 
 char ReadNybble() {
+    SetTris(1);
     LCD_E = 1;
     __lcd_delay();
-    char result = (LCD_DB7 << 3) | (LCD_DB6 << 2) | (LCD_DB5 << 1) | LCD_DB6;
+    char result = (unsigned char)((LCD_DB7 << 3) | (LCD_DB6 << 2) | (LCD_DB5 << 1) | LCD_DB6);
     LCD_E = 0;
     __lcd_delay();
     return result;
 }
 
-void SendByte(char instruction) {
-    SendNybble(instruction >> 4);
-    SendNybble(instruction & 0b1111);
-}
-
 void SendNybble(char nybble) {
-    LCD_RS = 0;
-    LCD_RW = LCD_RW_READ;
+    SetTris(0);
+    LCD_RW = LCD_RW_WRITE;
     
-    LCD_E = 1;
     
     LCD_DB4 = nybble & 0b0001;
-    LCD_DB5 = nybble & 0b0010;
-    LCD_DB6 = nybble & 0b0100;
-    LCD_DB7 = nybble & 0b1000;
+    LCD_DB5 = (nybble & 0b0010) >> 1;
+    LCD_DB6 = (nybble & 0b0100) >> 2;
+    LCD_DB7 = (nybble & 0b1000) >> 3;
+    
+    LCD_E = 1;
     
     __lcd_delay();
     
@@ -59,15 +41,43 @@ void SendNybble(char nybble) {
     __lcd_delay();
 }
 
-void AwaitUnbusy() {
-    LCD_RS = 0;
-    LCD_RW = 1;
-    
-    LCD_TRIS4 = 1;
-    LCD_TRIS5 = 1;
-    LCD_TRIS6 = 1;
-    LCD_TRIS7 = 1;
-    
-    while(LCD_BUSY);
+void SendByte(char byte) {
+    SendNybble(byte >> 4);
+    SendNybble(byte & 0b1111);
 }
 
+void SendInstruction(char instruction) {
+    LCD_RS = LCD_RS_INSTRUCTION;
+    SendByte(instruction);
+}
+
+void WriteCharacter(char character) {
+    LCD_RS = LCD_RS_DATA;
+    SendByte(character);
+}
+
+char ReadCharacter(char address) {
+    SendInstruction(LCD_SET_DDRAM_ADDRESS | (address & ~LCD_SET_DDRAM_ADDRESS));
+    LCD_RS = LCD_RS_DATA;
+    return ReadByte();
+}
+
+void SetTris(bool enabled) {
+    LCD_TRIS4 = enabled;
+    LCD_TRIS5 = enabled;
+    LCD_TRIS6 = enabled;
+    LCD_TRIS7 = enabled;
+}
+
+void AwaitUnbusy() {
+    SetTris(1);
+    LCD_RW = 1;
+    LCD_RS = 0;
+    
+    while(LCD_BUSY) {
+        LCD_E = !LCD_E;
+        __lcd_delay();
+    }
+    
+    LCD_E = 0;
+}
