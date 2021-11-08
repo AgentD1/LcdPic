@@ -18,6 +18,8 @@
 #include    "UBMP4.h"           // Include UBMP4 constants and functions
 
 #include    "Lcd.h"
+#include    "notes.h"
+
 
 void lcdInit(void);
 
@@ -26,12 +28,20 @@ void lcdInit(void);
 
 // The main function is required, and the program begins executing from here.
 
+const char topText[] = { 0b00010000, ' ', ' ', 'P', 'i', 'c', 'k', ' ', 'a', ' ', 's', 'o', 'n', 'g', ' ', 0b00010001 };
+
+const char songNames[2][16] = {
+    "Among us drip",
+    "Megalovania"
+};
+
+
+
 int main(void) {
     // Configure oscillator and I/O ports. These functions run once at start-up.
     OSC_config();               // Configure internal oscillator for 48 MHz
     UBMP4_config();             // Configure on-board UBMP4 I/O devices
 	
-    
     lcdInit();
     
     
@@ -48,10 +58,7 @@ int main(void) {
 void lcdInit() {
     AwaitUnbusy();
     SendNybble(LCD_FUNCTION_SET | LCD_DL_4BIT);
-    AwaitUnbusy();
     SendInstruction(LCD_FUNCTION_SET | LCD_DL_4BIT | LCD_N_2LINE | LCD_F_5x8);
-    AwaitUnbusy();
     SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_OFF);
-    AwaitUnbusy();
     SendInstruction(LCD_ENTRY_MODE_SET | LCD_INCREMENT | LCD_EM_CURSOR_MOVE);
 }

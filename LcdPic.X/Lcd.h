@@ -64,7 +64,7 @@
 #define LCD_SET_DDRAM_ADDRESS   0b10000000
 
 
-#define __lcd_delay() __delay_us(500)
+#define __lcd_delay() __delay_us(40)
 
 
 

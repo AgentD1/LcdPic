@@ -7,6 +7,7 @@
       <itemPath>UBMP4.h</itemPath>
       <itemPath>PIC16F1459config.h</itemPath>
       <itemPath>Lcd.h</itemPath>
+      <itemPath>notes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
