@@ -59,22 +59,21 @@ int main(void) {
 
 void lcdInit() {
     TRISC = 0b00000000; 
-    __delay_ms(20);
+    __delay_ms(100);
     SendNybble(0x03);
     __delay_ms(5);
     SendNybble(0x03);
     __delay_ms(5);
     SendNybble(0x03);
-    __delay_ms(5);
+    __delay_us(150);
     SendNybble(0x02);
     __lcd_delay();
     SendInstruction(LCD_FUNCTION_SET | LCD_DL_4BIT | LCD_N_2LINE | LCD_F_5x8);
     __lcd_delay();
-    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_OFF | LCD_CURSOR_OFF | LCD_BLINKING_OFF);
+    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_ON);
     __lcd_delay();
     SendInstruction(LCD_CLEAR_DISPLAY);
     __lcd_delay();
     SendInstruction(LCD_ENTRY_MODE_SET | LCD_INCREMENT | LCD_EM_CURSOR_MOVE);
     __delay_ms(500);
-    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_OFF);
 }
