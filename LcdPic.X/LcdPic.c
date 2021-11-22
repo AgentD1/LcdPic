@@ -44,9 +44,11 @@ int main(void) {
 	
     lcdInit();
     
+    WriteCharacter('x');
     
     // Code in this while loop runs repeatedly.
     while(1) {
+        WriteCharacter('x');
            
         // Activate bootloader if SW1 is pressed.
         if(SW1 == 0) {
@@ -56,9 +58,23 @@ int main(void) {
 }
 
 void lcdInit() {
-    AwaitUnbusy();
-    SendNybble(LCD_FUNCTION_SET | LCD_DL_4BIT);
+    TRISC = 0b00000000; 
+    __delay_ms(20);
+    SendNybble(0x03);
+    __delay_ms(5);
+    SendNybble(0x03);
+    __delay_ms(5);
+    SendNybble(0x03);
+    __delay_ms(5);
+    SendNybble(0x02);
+    __lcd_delay();
     SendInstruction(LCD_FUNCTION_SET | LCD_DL_4BIT | LCD_N_2LINE | LCD_F_5x8);
-    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_OFF);
+    __lcd_delay();
+    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_OFF | LCD_CURSOR_OFF | LCD_BLINKING_OFF);
+    __lcd_delay();
+    SendInstruction(LCD_CLEAR_DISPLAY);
+    __lcd_delay();
     SendInstruction(LCD_ENTRY_MODE_SET | LCD_INCREMENT | LCD_EM_CURSOR_MOVE);
+    __delay_ms(500);
+    SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_OFF);
 }

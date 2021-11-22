@@ -1,3 +1,4 @@
+
 #include <xc.h>
 
 #include "Lcd.h"
@@ -63,10 +64,11 @@ char ReadCharacter(char address) {
 }
 
 void SetTris(bool enabled) {
-    LCD_TRIS4 = enabled;
-    LCD_TRIS5 = enabled;
-    LCD_TRIS6 = enabled;
-    LCD_TRIS7 = enabled;
+    if(enabled) {
+        TRISC |= 0b00011111;
+    } else {
+        TRISC &= 0b11100000;
+    }
 }
 
 void AwaitUnbusy() {
