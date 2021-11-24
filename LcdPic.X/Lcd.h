@@ -8,12 +8,10 @@
 
 // Good
 
-#define LCD_RS    H5OUT
-#define LCD_RW    H6OUT
-#define LCD_E     H7OUT
+#define LCD_RS    H6OUT
+#define LCD_RW    H7OUT
+#define LCD_E     H5OUT
 
-#define LCD_BUSY  H7IN
-#define LCD_BTRIS TRISCbits.TRISC6
 
 #define LCD_DB4   H1OUT
 #define LCD_DB5   H2OUT
@@ -25,6 +23,9 @@
 #define LCD_TRIS5 TRISCbits.TRISC1
 #define LCD_TRIS6 TRISCbits.TRISC2
 #define LCD_TRIS7 TRISCbits.TRISC3
+
+#define LCD_BUSY  H7IN
+#define LCD_BTRIS TRISCbits.TRISC6
 
 // Good
 #define LCD_RW_WRITE 0

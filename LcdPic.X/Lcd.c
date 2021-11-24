@@ -1,4 +1,3 @@
-
 #include <xc.h>
 
 #include "Lcd.h"
@@ -25,13 +24,17 @@ char ReadNybble() {
 
 void SendNybble(char nybble) {
     SetTris(0);
-    LCD_RW = LCD_RW_WRITE;
-    
     
     LCD_DB4 = nybble & 0b0001;
     LCD_DB5 = (nybble & 0b0010) >> 1;
     LCD_DB6 = (nybble & 0b0100) >> 2;
     LCD_DB7 = (nybble & 0b1000) >> 3;
+    
+    __lcd_delay();
+    
+    LCD_RW = LCD_RW_WRITE;
+    
+    __lcd_delay();
     
     LCD_E = 1;
     
@@ -50,11 +53,13 @@ void SendByte(char byte) {
 void SendInstruction(char instruction) {
     LCD_RS = LCD_RS_INSTRUCTION;
     SendByte(instruction);
+    LCD_RW = LCD_RW_READ;
 }
 
 void WriteCharacter(char character) {
     LCD_RS = LCD_RS_DATA;
     SendByte(character);
+    LCD_RW = LCD_RW_READ;
 }
 
 char ReadCharacter(char address) {
@@ -65,9 +70,9 @@ char ReadCharacter(char address) {
 
 void SetTris(bool enabled) {
     if(enabled) {
-        TRISC |= 0b00011111;
+        TRISC |= 0b11110000;
     } else {
-        TRISC &= 0b11100000;
+        TRISC &= 0b00001111;
     }
 }
 
