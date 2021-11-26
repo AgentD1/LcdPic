@@ -8,15 +8,15 @@
 
 // Good
 
-#define LCD_RS    H6OUT
-#define LCD_RW    H7OUT
-#define LCD_E     H5OUT
+#define LCD_RS    H1OUT
+#define LCD_RW    H2OUT
+#define LCD_E     H3OUT
 
 
-#define LCD_DB4   H1OUT
-#define LCD_DB5   H2OUT
-#define LCD_DB6   H3OUT
-#define LCD_DB7   H4OUT
+#define LCD_DB4   H5OUT
+#define LCD_DB5   H6OUT
+#define LCD_DB6   H7OUT
+#define LCD_DB7   H8OUT
 
 // Probably not good but its ok
 #define LCD_TRIS4 TRISCbits.TRISC0

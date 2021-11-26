@@ -70,9 +70,9 @@ char ReadCharacter(char address) {
 
 void SetTris(bool enabled) {
     if(enabled) {
-        TRISC |= 0b11110000;
+        TRISC |= 0b00001111;
     } else {
-        TRISC &= 0b00001111;
+        TRISC &= 0b11110000;
     }
 }
 
