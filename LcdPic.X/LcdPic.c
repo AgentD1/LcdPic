@@ -45,10 +45,15 @@ int main(void) {
     lcdInit();
     
     WriteCharacter('x');
+    WriteCharacter('x');
+    
+    __delay_ms(3000);
+    
+    WriteCharacter('x');
+    WriteCharacter('x');
     
     // Code in this while loop runs repeatedly.
     while(1) {
-        //WriteCharacter('x');
            
         // Activate bootloader if SW1 is pressed.
         if(SW1 == 0) {
@@ -58,11 +63,12 @@ int main(void) {
 }
 
 void lcdInit() {
-    TRISC = 0b00000000; 
+    LATC = 0b00000000;
+    TRISC = 0b11111111; 
     LCD_RW = LCD_RW_WRITE;
     LCD_RS = LCD_RS_INSTRUCTION;
     LCD_E = 0;
-    __delay_ms(100);
+    __delay_ms(1000);
     SendNybble(0x03);
     __delay_ms(1);
     SendNybble(0x03);
@@ -73,11 +79,14 @@ void lcdInit() {
     __lcd_delay();
     //SendInstruction(LCD_FUNCTION_SET | LCD_DL_4BIT | LCD_N_2LINE | LCD_F_5x8);
     __lcd_delay();
-    SendInstruction(0x06);
+    SendNybble(0x6);
+    __lcd_delay();
+    SendNybble(0x6);
+    //SendInstruction(0x06);
     //SendInstruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINKING_ON);
     __lcd_delay();
-    SendInstruction(0x06);
-    //SendInstruction(LCD_CLEAR_DISPLAY);
+    //SendInstruction(0x06);
+    SendInstruction(LCD_CLEAR_DISPLAY);
     __lcd_delay();
     SendInstruction(0x06);
     //SendInstruction(LCD_ENTRY_MODE_SET | LCD_INCREMENT | LCD_EM_CURSOR_MOVE);
